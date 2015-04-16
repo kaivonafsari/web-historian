@@ -17,7 +17,8 @@ exports.paths = {
   'archivedSites' : path.join(__dirname, '../archives/sites'),
   // 'fixtureName' : path.join(__dirname, '../archives/sites/www.google.com'),
 
-  'list' : path.join(__dirname, '../archives/sites.txt')
+  'list' : path.join(__dirname, '../archives/sites.txt'),
+  'txt'  : path.join(__dirname, '../archives/sites.txt')
 };
 
 // Used for stubbing paths for jasmine tests, do not modify
