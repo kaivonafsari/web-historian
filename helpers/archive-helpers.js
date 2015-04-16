@@ -11,7 +11,12 @@ var _ = require('underscore');
 
 exports.paths = {
   'siteAssets' : path.join(__dirname, '../web/public'),
+  'index' : path.join(__dirname, '../web/public/index.html'),
+  'styles' : path.join(__dirname, '../web/public/styles.css'),
+
   'archivedSites' : path.join(__dirname, '../archives/sites'),
+  // 'fixtureName' : path.join(__dirname, '../archives/sites/www.google.com'),
+
   'list' : path.join(__dirname, '../archives/sites.txt')
 };
 
