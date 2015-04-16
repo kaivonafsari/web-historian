@@ -32,15 +32,33 @@ exports.initialize = function(pathsObj){
 // modularize your code. Keep it clean!
 
 exports.readListOfUrls = function(){
+  console.log('reading the list');
+  fs.readFile('../archives/sites.txt', function(err, data) {
+      if(err) throw err;
+      var array = data.toString().split("\n");
+      for(var i = 0; i < array.length; i++) {
+          console.log(array[i]);
+      }
+      return array;
+  });
 };
 
-exports.isUrlInList = function(){
+exports.isUrlInList = function(url){
+  var urlList = this.readListOfUrls();
+  urlList.each(function(item){
+    if (url === item){
+      return true;
+    }
+    return false;
+  });
 };
 
-exports.addUrlToList = function(){
+exports.addUrlToList = function(siteUrl){
+  fs.appendFile( '../archives/sites.txt', siteUrl + '\n', function (err) {
+  });
 };
 
-exports.isURLArchived = function(){
+exports.isURLArchived = function(url){
 };
 
 exports.downloadUrls = function(){

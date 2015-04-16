@@ -1,2 +1,4 @@
-www.google.com
-www.digg.com
+test1.com
+test2.com
+test3.com
+
