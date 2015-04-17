@@ -25,6 +25,37 @@ exports.handleRequest = function (req, res) {
     req.on('end', function (){
       obj = queryString.parse(str);
       var siteUrl =  obj.url;
+      //we have the url
+      archive.isUrlInList(siteUrl, function(found){
+      //check if the url is on the list
+        if (found){
+        //if it is on the list
+          //is it archived
+        archive.isURLArchived(siteUrl, function(exists){
+          if (exists){
+            //if its archived
+              //send to page
+            res.writeHead(302, {"Location": archive.paths.archivedSites + '/' + siteUrl});
+            res.end();
+          }
+          else {
+            //if not archived
+              //send to loading page
+            res.writeHead(302, {"Location": '/loading.html'});
+            res.end();
+          }
+        })
+
+
+        }
+        //if not on the list
+          //add it to the list
+
+      })
+
+
+
+
       archive.addUrlToList(siteUrl);
       // fs.appendFile( '../archives/sites.txt', siteUrl + '\n', function (err) {
       // });
@@ -51,8 +82,7 @@ exports.handleRequest = function (req, res) {
         filePath = archive.paths.archivedSites + '/' + req.url;
         fs.readFile(filePath, function(error, content){
           if (error) {
-            archive.addUrlToList(req.url.slice(1));
-            res.writeHead(302, {"Location": '/loading.html'});
+            res.writeHead(404);
             res.end();
           } else {
             res.writeHead(200, {"Content-Type": contentType});
