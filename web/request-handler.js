@@ -23,45 +23,55 @@ exports.handleRequest = function (req, res) {
     });
 
     req.on('end', function (){
+      console.log('end event fired');
       obj = queryString.parse(str);
-      var siteUrl =  obj.url;
+      var siteUrl =  JSON.stringify(obj.url);
+      console.log('siteUrl: ', siteUrl);
       //we have the url
       archive.isUrlInList(siteUrl, function(found){
       //check if the url is on the list
+      console.log("is this url in the list: ", siteUrl)
+      console.log('found: ', found)
         if (found){
-        //if it is on the list
-          //is it archived
-        archive.isURLArchived(siteUrl, function(exists){
-          if (exists){
-            //if its archived
-              //send to page
-            res.writeHead(302, {"Location": archive.paths.archivedSites + '/' + siteUrl});
-            res.end();
-          }
-          else {
-            //if not archived
-              //send to loading page
+          console.log('found!!!!!!')
+        }else{
+          console.log('not found!!!!! ', siteUrl)
+          archive.addUrlToList(siteUrl, function(){
+            console.log('add to list called');
             res.writeHead(302, {"Location": '/loading.html'});
             res.end();
-          }
-        })
-
-
+          });
         }
-        //if not on the list
-          //add it to the list
+        // if (found){
+        // //if it is on the isUrlInList
+        //   //is it archived
+        //   archive.isURLArchived(siteUrl, function(exists){
+        //     if (exists){
+        //       //if its archived
+        //         //send to page
+        //       res.writeHead(302, {"Location": archive.paths.archivedSites + '/' + siteUrl});
+        //       res.end();
+        //     }
+        //     else {
+        //       //if not archived
+        //         //send to loading page
+        //       res.writeHead(302, {"Location": '/loading.html'});
+        //       res.end();
+        //     }
+        //   })
+        // }else{
+        //   console.log('about to call addURL');
+        //   archive.addUrlToList(siteUrl, function(){
+        //     // console.log('add to list called');
+        //     res.writeHead(302, {"Location": '/loading.html'});
+        //     res.end();
+        //   })
+        // //if not on the list
+        //   //add it to the list
+
+        // }
 
       })
-
-
-
-
-      archive.addUrlToList(siteUrl);
-      // fs.appendFile( '../archives/sites.txt', siteUrl + '\n', function (err) {
-      // });
-      res.writeHead(302, {"Location": '/loading.html'});
-      res.end();
-      // htmlFetch.htmlFetcher();
     });
   }else{
     console.log('else statement');

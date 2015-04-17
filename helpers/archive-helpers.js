@@ -43,26 +43,31 @@ exports.readListOfUrls = function(callback){
 };
 
 exports.isUrlInList = function(url, callback){
-  this.readListOfUrls(function(sites){
-   var found;
-   sites.each(function(item){
-      if (url === item){
-        found = item;
-      }else{
-        found = null;
-      }
-        callback(found);
-    };
-  });
-};
 
-exports.addUrlToList = function(siteUrl){
-  fs.appendFile( '../archives/sites.txt', siteUrl + '\n', function (err) {
+  exports.readListOfUrls(function(sites){
+   var found = false;
+   console.log(Array.isArray(sites));
+   for (var i = 0; i < sites.length; i++){
+    if (url === sites[i]){
+      console.log('match!');
+      found = true;
+    }
+    callback(found);
+   }
+
+  });
+}
+
+
+exports.addUrlToList = function(url, callback){
+  console.log('add to list callback');
+  fs.appendFile( '/Users/student/Documents/2015-03-web-historian/archives/sites.txt', url + '\n', function (err, file) {
+    callback();
   });
 };
 
 exports.isURLArchived = function(url, callback){
-  var filePath = this.paths.archivedSites + '/' + url
+  var filePath = exports.paths.archivedSites + '/' + url
   fs.exists(filePath, function(exists){
     callback(exists);
   })
